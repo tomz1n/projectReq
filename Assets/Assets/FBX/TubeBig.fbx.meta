@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: ad83e512031354b49ad257b82afa9d63
+guid: 4d8f8c07e1a8ab149a0305b70d9aa890
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: rust_coarse_01_diff_2k
+    second: {fileID: 2800000, guid: 2fa4c7eb0cd90a444ba7fcab4c232d79, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

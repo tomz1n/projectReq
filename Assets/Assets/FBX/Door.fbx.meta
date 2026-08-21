@@ -1,9 +1,54 @@
 fileFormatVersion: 2
-guid: ad83e512031354b49ad257b82afa9d63
+guid: d112a6336bf3bbc44b7ba533c1a8cd42
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BorderDoor
+    second: {fileID: 2100000, guid: dcded42af0c7a1942bc00d0446d631aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Door
+    second: {fileID: 2100000, guid: 88261f9276d3cc246805ac0d5b4b223a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Handler
+    second: {fileID: 2100000, guid: 716b648ba42de0b4998c19a6e60771c1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal
+    second: {fileID: 2100000, guid: c1e03a4f1e1118d48be0b0a62809a7a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Window
+    second: {fileID: 2100000, guid: a0f473cef64dd3d42b35285b7a917edd, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: RoofElev
+    second: {fileID: 2800000, guid: df6acab92cb687b42a8438cef775ed2a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: door2
+    second: {fileID: 2800000, guid: 5b8dfad86472ac74db322adcc971739d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: rusty_metal_04_diff_2k
+    second: {fileID: 2800000, guid: eda2192158f961847b8b15491543561b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: rusty_metal_05_diff_2k
+    second: {fileID: 2800000, guid: 303e5a6158e96fc4291530e5b89efa3d, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
