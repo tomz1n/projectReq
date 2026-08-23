@@ -19,6 +19,11 @@ public class RadioSystem : MonoBehaviour
     [SerializeField] private AudioSource staticAudioSource;
     [SerializeField] private AudioSource voiceAudioSource;
     
+    [Header("Pickup Status")]
+    [SerializeField] private bool hasRadio = false;
+    
+    public bool HasRadio => hasRadio;
+    
     public event Action<bool> OnRadioToggled;
     public event Action<float> OnFrequencyChanged;
 
@@ -29,6 +34,8 @@ public class RadioSystem : MonoBehaviour
 
     private void Update()
     {
+        if (!hasRadio) return;
+        
         if (Input.GetKeyDown(toggleRadioKey))
         {
             _isRadioActive = !_isRadioActive;
@@ -85,5 +92,10 @@ public class RadioSystem : MonoBehaviour
     {
         targetFrequency = newTargetFreq;
         currentVoiceClip = newVoiceClip;
+    }
+    
+    public void EquipRadio()
+    {
+        hasRadio = true;
     }
 }

@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     
     [SerializeField] private RadioSystem radioSystem;
     
+    [SerializeField] private KeyCode interactKey = KeyCode.E;
+    [SerializeField] private float interactDistance = 2f;
+    [SerializeField] private LayerMask interactableLayer;
+    
     private const string Horizontal = "Horizontal";
     private const string Vertical = "Vertical";
 
@@ -69,6 +73,12 @@ public class PlayerMovement : MonoBehaviour
     
         cc.Move((_moveInput.y * _currentMovementSpeed * Time.deltaTime) * 
             Move(transform.forward) + (_playerVelocity * Time.deltaTime));
+        
+        
+        if (Input.GetKeyDown(interactKey))
+        {
+            TryInteract();
+        }
     }
 
     private Vector3 Move(Vector3 velocity)
@@ -105,6 +115,19 @@ public class PlayerMovement : MonoBehaviour
         var color = Grounded() ? Color.green : Color.red;
         Gizmos.color =  color;
         Gizmos.DrawSphere(transform.position + groundedOffset, cc.radius);
+    }
+    
+    private void TryInteract()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, interactDistance, interactableLayer))
+        {
+            DoorKeypad door = hit.collider.GetComponent<DoorKeypad>();
+            if (door != null)
+            {
+                door.OpenKeypadUI();
+            }
+        }
     }
 }
 
