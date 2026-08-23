@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private CharacterController cc;
     
+    [SerializeField] private RadioSystem radioSystem;
+    
     private const string Horizontal = "Horizontal";
     private const string Vertical = "Vertical";
 
@@ -29,9 +31,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (radioSystem != null && radioSystem.IsRadioActive)
+        {
+            _moveInput = Vector2.zero;
+            OnMovement?.Invoke(Vector2.zero);
+            
+            if (Grounded() && _playerVelocity.y < 0)
+            {
+                _playerVelocity.y = 0f;
+            }
+            _playerVelocity.y += gravity * Time.deltaTime;
+            cc.Move(_playerVelocity * Time.deltaTime);
+        
+            return;
+        }
+        
         _moveInput.x = Input.GetAxis(Horizontal);
         _moveInput.y = Input.GetAxis(Vertical);
-        
+    
         _sprinting = Input.GetKey(sprintingKey);
 
         if (Grounded() && _playerVelocity.y < 0)
@@ -47,10 +64,9 @@ public class PlayerMovement : MonoBehaviour
         if (_moveInput != Vector2.zero)
         {
             transform.Rotate(0, _moveInput.x * _moveStats.RotateSpeed * 50 * Time.deltaTime, 0);
-            
             OnMovement?.Invoke(_moveInput);
         }
-        
+    
         cc.Move((_moveInput.y * _currentMovementSpeed * Time.deltaTime) * 
             Move(transform.forward) + (_playerVelocity * Time.deltaTime));
     }
