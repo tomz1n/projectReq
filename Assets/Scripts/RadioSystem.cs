@@ -3,6 +3,15 @@ using UnityEngine;
 
 public class RadioSystem : MonoBehaviour
 {
+    [System.Serializable]
+    public struct RadioStation
+    {
+        public string stationName;
+        public float frequency;
+        public float tolerance;
+        public AudioClip voiceClip;
+    }
+
     [Header("Radio Settings")]
     [SerializeField] private KeyCode toggleRadioKey = KeyCode.R;
     [SerializeField] private float currentFrequency = 90.0f;
@@ -11,9 +20,8 @@ public class RadioSystem : MonoBehaviour
     [SerializeField] private float frequencyStepSpeed = 5.0f;
     [SerializeField] private float tolerance = 0.4f;
 
-    [Header("Target Zone (Dinamico)")]
-    [SerializeField] private float targetFrequency = 104.5f;
-    [SerializeField] private AudioClip currentVoiceClip;
+    [Header("Estaciones Activas de la Zona Actual")]
+    [SerializeField] private RadioStation[] activeZoneStations;
 
     [Header("Audio Components")]
     [SerializeField] private AudioSource staticAudioSource;
@@ -48,8 +56,7 @@ public class RadioSystem : MonoBehaviour
         }
 
         if (!_isRadioActive) return;
-
-        // Ajuste de Frecuencia con A/D o Flechas
+        
         float input = Input.GetAxis("Horizontal");
         if (Mathf.Abs(input) > 0.01f)
         {
@@ -63,35 +70,60 @@ public class RadioSystem : MonoBehaviour
 
     private void ProcessRadioAudio()
     {
-        bool isTuned = Mathf.Abs(currentFrequency - targetFrequency) <= tolerance;
-
-        if (isTuned && currentVoiceClip != null)
+        AudioClip clipToPlay = null;
+        
+        if (activeZoneStations != null)
         {
-            if (staticAudioSource.isPlaying) staticAudioSource.Stop();
-            
-            if (!voiceAudioSource.isPlaying)
+            foreach (var station in activeZoneStations)
             {
-                voiceAudioSource.clip = currentVoiceClip;
-                voiceAudioSource.Play();
+                float stationTol = station.tolerance > 0 ? station.tolerance : tolerance;
+                if (Mathf.Abs(currentFrequency - station.frequency) <= stationTol)
+                {
+                    clipToPlay = station.voiceClip;
+                    break;
+                }
+            }
+        }
+
+        if (clipToPlay != null)
+        {
+            if (staticAudioSource != null && staticAudioSource.isPlaying) 
+                staticAudioSource.Stop();
+            
+            if (voiceAudioSource != null)
+            {
+                if (voiceAudioSource.clip != clipToPlay || !voiceAudioSource.isPlaying)
+                {
+                    voiceAudioSource.clip = clipToPlay;
+                    voiceAudioSource.Play();
+                }
             }
         }
         else
         {
-            if (voiceAudioSource.isPlaying) voiceAudioSource.Stop();
-            if (!staticAudioSource.isPlaying) staticAudioSource.Play();
+            if (voiceAudioSource != null && voiceAudioSource.isPlaying) 
+                voiceAudioSource.Stop();
+                
+            if (staticAudioSource != null && !staticAudioSource.isPlaying) 
+                staticAudioSource.Play();
         }
     }
 
     private void StopAllRadioAudio()
     {
-        if (staticAudioSource.isPlaying) staticAudioSource.Stop();
-        if (voiceAudioSource.isPlaying) voiceAudioSource.Stop();
+        if (staticAudioSource != null && staticAudioSource.isPlaying) staticAudioSource.Stop();
+        if (voiceAudioSource != null && voiceAudioSource.isPlaying) voiceAudioSource.Stop();
     }
-    
-    public void SetZoneFrequency(float newTargetFreq, AudioClip newVoiceClip)
+
+    public void SetZoneStations(RadioStation[] stations)
     {
-        targetFrequency = newTargetFreq;
-        currentVoiceClip = newVoiceClip;
+        activeZoneStations = stations;
+    }
+
+    public void ClearZoneStations()
+    {
+        activeZoneStations = null;
+        StopAllRadioAudio();
     }
     
     public void EquipRadio()
