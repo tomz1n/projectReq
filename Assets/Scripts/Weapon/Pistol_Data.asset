@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15a5608dbb84544fbd309038b266faf, type: 3}
+  m_Name: Pistol_Data
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  weaponName: Handgun
+  isRaycast: 1
+  magazineCapacity: 7
+  initialReserveAmmo: 21
+  maxReserveAmmo: 60
+  damage: 25
+  range: 15
+  fireRate: 0.5
+  muzzleFlashPrefab: {fileID: 896733438507499895, guid: 24848159c9f47c64c9f1f6a0657e2f69, type: 3}
+  shootSound: {fileID: 8300000, guid: 6c301c957da8ffe4ab6a059cae9f66e9, type: 3}
+  reloadSound: {fileID: 8300000, guid: 148f60377e6ff8245b53aed83f966f78, type: 3}
+  emptyClickSound: {fileID: 8300000, guid: ff1d2c2486e37b74aa67d701c3556c02, type: 3}

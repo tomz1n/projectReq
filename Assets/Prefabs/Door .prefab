@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -657
+      value: -1.2283325
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000047884396
+      value: -1.29171
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 306.03793
+      value: -0.16204834
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       propertyPath: m_LocalRotation.w
@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       propertyPath: m_LocalRotation.y
@@ -62,6 +62,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
       insertIndex: -1
       addedObject: {fileID: 499464590433811177}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 136748193795646061}
   m_SourcePrefab: {fileID: 100100000, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}
 --- !u!1 &3669111298486300807 stripped
 GameObject:
@@ -87,8 +90,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.289466, y: 2.179187, z: 1.7124007}
-  m_Center: {x: 0, y: 1.1053697, z: 0.78476036}
+  m_Size: {x: 1.289466, y: 2.179187, z: 2.7027266}
+  m_Center: {x: 0, y: 1.1053697, z: 1.2799233}
 --- !u!114 &499464590433811177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +110,35 @@ MonoBehaviour:
   doorTransform: {fileID: 4152492466950744637}
   openSpeed: 2
   openRotation: {x: 0, y: 0, z: 0}
-  openOffset: {x: 10, y: 0, z: 0}
+  openOffset: {x: -7, y: 0, z: 0}
+--- !u!114 &136748193795646061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3669111298486300807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a8c0b1b690aeba42a0612c756ce59a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableTrigger
+  interactMessage: Press [E] to interact
+  OnInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 499464590433811177}
+        m_TargetAssemblyTypeName: DoorKeypad, Assembly-CSharp
+        m_MethodName: OpenKeypadUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &4152492466950744637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d112a6336bf3bbc44b7ba533c1a8cd42, type: 3}

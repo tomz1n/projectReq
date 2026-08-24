@@ -3,10 +3,8 @@ using UnityEngine.Events;
 
 public class InteractableTrigger : MonoBehaviour
 {
-    [Header("UI Message")]
-    [SerializeField] private string interactMessage = "Presiona [E] para interactuar";
-
-    [Header("Eventos al Interactuar")]
+    [SerializeField] private string interactMessage = "Press [E] to interact";
+    
     public UnityEvent OnInteract;
 
     private bool _isPlayerInside = false;

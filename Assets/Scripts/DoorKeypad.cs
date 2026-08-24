@@ -4,20 +4,15 @@ using UnityEngine;
 public class DoorKeypad : MonoBehaviour
 {
     public enum DoorType { Rotate, Slide }
-
-    [Header("Puzzle Settings")]
+    
     [SerializeField] private string correctCode = "4821";
     [SerializeField] private KeypadUI keypadUI;
-
-    [Header("Configuracion de Apertura")]
+    
     [SerializeField] private DoorType doorType = DoorType.Rotate;
     [SerializeField] private Transform doorTransform;
     [SerializeField] private float openSpeed = 2f;
-
-    [Header("Valores para Rotacion (Rotate)")]
+    
     [SerializeField] private Vector3 openRotation = new Vector3(0, 90f, 0);
-
-    [Header("Valores para Desplazamiento (Slide)")]
     [SerializeField] private Vector3 openOffset = new Vector3(0, 3f, 0);
 
     private bool _isUnlocked = false;
