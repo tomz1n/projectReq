@@ -22,15 +22,24 @@ public class KeypadUI : MonoBehaviour
         UpdateDisplay();
         keypadPanel.SetActive(true);
 
+        // 1. Bloqueamos el movimiento del jugador
         if (playerMovement != null) playerMovement.enabled = false;
-    }
 
+        // 2. LIBERAMOS Y MOSTRAMOS EL CURSOR PARA EL PUZZLE
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
     public void CloseKeypad()
     {
         keypadPanel.SetActive(false);
         _currentDoor = null;
 
+        // 1. Reactivamos el movimiento del jugador
         if (playerMovement != null) playerMovement.enabled = true;
+
+        // 2. VOLVEMOS A OCULTAR Y BLOQUEAR EL CURSOR PARA VOLVER AL GAMEPLAY
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void PressNumber(string number)

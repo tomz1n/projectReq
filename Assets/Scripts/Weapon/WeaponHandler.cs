@@ -4,20 +4,24 @@ using UnityEngine;
 public class WeaponHandler : MonoBehaviour
 {
     [SerializeField] private RadioSystem radioSystem;
-
+    
     [SerializeField] private WeaponData currentWeapon;
     [SerializeField] private GameObject weaponMeshObject;
     [SerializeField] private Transform firePoint;
     [SerializeField] private LayerMask shootableLayers;
     [SerializeField] private AudioSource audioSource;
-    
+
     [SerializeField] private bool hasWeapon = false;
     [SerializeField] private bool isHolstered = false;
-    
+
     [SerializeField] private KeyCode aimKey = KeyCode.Mouse1;
     [SerializeField] private KeyCode shootKey = KeyCode.Mouse0;
     [SerializeField] private KeyCode reloadKey = KeyCode.R;
     [SerializeField] private KeyCode holsterKey = KeyCode.H;
+ 
+    [SerializeField] private LineRenderer laserLine;
+    [SerializeField] private Transform laserOrigin;
+    [SerializeField] private float laserDistance = 20f;
     
     public WeaponData CurrentWeapon => currentWeapon;
 
@@ -56,10 +60,16 @@ public class WeaponHandler : MonoBehaviour
         if (radioSystem != null && radioSystem.IsRadioActive)
         {
             _isAiming = false;
+            UpdateLaser();
             return;
         }
         
-        if (!hasWeapon) return;
+        if (!hasWeapon)
+        {
+            _isAiming = false;
+            UpdateLaser();
+            return;
+        }
         
         if (Input.GetKeyDown(holsterKey) && !_isReloading)
         {
@@ -70,10 +80,10 @@ public class WeaponHandler : MonoBehaviour
         if (isHolstered || _isReloading)
         {
             _isAiming = false;
+            UpdateLaser();
             return;
         }
-
-        // 5. RECARGA (Tecla R)
+        
         if (Input.GetKeyDown(reloadKey) && _currentAmmo < currentWeapon.magazineCapacity && _reserveAmmo > 0)
         {
             StartCoroutine(ReloadRoutine());
@@ -81,11 +91,41 @@ public class WeaponHandler : MonoBehaviour
         }
         
         _isAiming = Input.GetKey(aimKey);
-
+        
+        UpdateLaser();
+        
         if (_isAiming && Input.GetKeyDown(shootKey) && Time.time >= _nextTimeToShoot)
         {
             _nextTimeToShoot = Time.time + currentWeapon.fireRate;
             Shoot();
+        }
+    }
+
+    private void UpdateLaser()
+    {
+        if (laserLine == null) return;
+        
+        if (_isAiming && hasWeapon && !isHolstered && !_isReloading)
+        {
+            laserLine.enabled = true;
+
+            Transform origin = laserOrigin != null ? laserOrigin : firePoint;
+            if (origin == null) return;
+
+            laserLine.SetPosition(0, origin.position);
+
+            if (Physics.Raycast(origin.position, origin.forward, out RaycastHit hit, laserDistance, shootableLayers))
+            {
+                laserLine.SetPosition(1, hit.point);
+            }
+            else
+            {
+                laserLine.SetPosition(1, origin.position + origin.forward * laserDistance);
+            }
+        }
+        else
+        {
+            laserLine.enabled = false;
         }
     }
 
