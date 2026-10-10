@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour, IDamageable
 {
-    public enum EnemyState { Patrol, Chase, Attack, Dead }
+    public enum EnemyState { Patrol, Chase, Attack, Dead }  
 
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform player;
@@ -24,6 +24,13 @@ public class EnemyAI : MonoBehaviour, IDamageable
     
     [SerializeField] private Transform[] patrolPoints;
     [SerializeField] private float waypointWaitTime = 2f;
+    
+    [SerializeField] private AudioSource enemyAudioSource;
+    [SerializeField] private AudioClip[] attackSounds;
+    [SerializeField] private AudioClip[] stepSounds;
+    [SerializeField] private float stepInterval = 0.5f;
+    
+    private float _stepTimer;
 
     private EnemyState _currentState = EnemyState.Patrol;
     private float _currentHealth;
@@ -95,6 +102,7 @@ public class EnemyAI : MonoBehaviour, IDamageable
         }
 
         UpdateAnimator();
+        HandleFootsteps();
     }
 
     private void HandlePatrol()
@@ -152,12 +160,26 @@ public class EnemyAI : MonoBehaviour, IDamageable
         animator.SetBool("IsRunning", _currentState == EnemyState.Chase && speed > 0.1f);
     }
     
-
+    private void HandleFootsteps()
+    {
+        if (agent.velocity.magnitude > 0.1f && !_isAttacking && agent.enabled)
+        {
+            _stepTimer += Time.deltaTime;
+            if (_stepTimer >= stepInterval)
+            {
+                _stepTimer = 0f;
+                PlayRandomSound(stepSounds, 0.6f);
+            }
+        }
+    }
+    
     public void OnAttackStart()
     {
         _isAttacking = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
+        
+        PlayRandomSound(attackSounds);
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         if (distanceToPlayer <= attackRange + 0.5f)
@@ -167,8 +189,6 @@ public class EnemyAI : MonoBehaviour, IDamageable
             {
                 playerDamageable.TakeDamage(attackDamage);
             }
-
-            Debug.Log($"<color=red>[ENEMIGO ATACO]</color> Realizó {attackDamage} de daño al jugador.");
         }
     }
 
@@ -229,7 +249,6 @@ public class EnemyAI : MonoBehaviour, IDamageable
         if (_currentState == EnemyState.Dead) return;
 
         _currentHealth -= damage;
-        Debug.Log($"<color=orange>[ENEMIGO IMPACTADO]</color> Vida restante: {_currentHealth}");
 
         if (_currentState == EnemyState.Patrol)
         {
@@ -268,5 +287,17 @@ public class EnemyAI : MonoBehaviour, IDamageable
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+    }
+    
+    private void PlayRandomSound(AudioClip[] clips, float volume = 1f)
+    {
+        if (clips != null && clips.Length > 0 && enemyAudioSource != null)
+        {
+            int randomIndex = Random.Range(0, clips.Length);
+            if (clips[randomIndex] != null)
+            {
+                enemyAudioSource.PlayOneShot(clips[randomIndex], volume);
+            }
+        }
     }
 }

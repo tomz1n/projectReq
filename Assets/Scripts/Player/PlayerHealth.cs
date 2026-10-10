@@ -6,6 +6,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private float currentHealth;
     [SerializeField] private MenuManager menuManager;
 
+    [SerializeField] private AudioSource playerAudioSource;
+    [SerializeField] private AudioClip[] hurtSounds;
+
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
     
@@ -29,7 +32,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (_isDead) return;
 
         currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealth);
-        Debug.Log($"<color=red>[PLAYER SALUD]</color> Vida actual: {currentHealth}/{maxHealth}");
+        
+        PlayRandomHurtSound();
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
 
@@ -68,6 +72,27 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             MenuManager manager = FindObjectOfType<MenuManager>();
             if (manager != null) manager.ShowGameOver();
+        }
+    }
+    
+    private void PlayRandomHurtSound()
+    {
+        if (hurtSounds != null && hurtSounds.Length > 0)
+        {
+            int randomIndex = Random.Range(0, hurtSounds.Length);
+            AudioClip clip = hurtSounds[randomIndex];
+
+            if (clip != null)
+            {
+                if (playerAudioSource != null)
+                {
+                    playerAudioSource.PlayOneShot(clip);
+                }
+                else
+                {
+                    AudioSource.PlayClipAtPoint(clip, transform.position);
+                }
+            }
         }
     }
 }

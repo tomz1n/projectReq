@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
         if (pausePanel != null) pausePanel.SetActive(false);
 
         Time.timeScale = 1f;
+        AudioListener.pause = false;
         LockCursor(true);
     }
 
@@ -23,6 +24,12 @@ public class MenuManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (KeypadUI.IsOpen)
+            {
+                FindObjectOfType<KeypadUI>()?.CloseKeypad();
+                return;
+            }
+
             if (!gameOverPanel.activeSelf && !victoryPanel.activeSelf)
             {
                 TogglePause();
@@ -61,12 +68,14 @@ public class MenuManager : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMainMenu()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
         SceneManager.LoadScene("MainMenu"); 
     }
 
@@ -79,19 +88,30 @@ public class MenuManager : MonoBehaviour
     private void PauseGameAndUnlockCursor()
     {
         Time.timeScale = 0f;
+        AudioListener.pause = true;
         LockCursor(false);
     }
     
     public void PlayGame()
     {
         Time.timeScale = 1f;
+        AudioListener.pause = false;
         SceneManager.LoadScene("LevelOne"); 
     }
 
     private void ResumeGameAndLockCursor()
     {
         Time.timeScale = 1f;
-        LockCursor(true);
+        AudioListener.pause = false;
+        
+        if (KeypadUI.IsOpen)
+        {
+            LockCursor(false);
+        }
+        else
+        {
+            LockCursor(true);
+        }
     }
 
     private void LockCursor(bool isLocked)

@@ -15,9 +15,9 @@ MonoBehaviour:
   weaponName: Handgun
   isRaycast: 1
   magazineCapacity: 7
-  initialReserveAmmo: 21
-  maxReserveAmmo: 60
-  damage: 25
+  initialReserveAmmo: 7
+  maxReserveAmmo: 21
+  damage: 15
   range: 15
   fireRate: 0.5
   muzzleFlashPrefab: {fileID: 896733438507499895, guid: 24848159c9f47c64c9f1f6a0657e2f69, type: 3}

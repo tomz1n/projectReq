@@ -8,10 +8,10 @@ public class EnemyAnimationRelay : MonoBehaviour
     {
         _enemyAI = GetComponentInParent<EnemyAI>();
     }
-    
+
     public void OnAttackStart()
     {
-        if (_enemyAI != null)
+        if (_enemyAI != null && _enemyAI.gameObject != null)
         {
             _enemyAI.OnAttackStart();
         }
@@ -19,7 +19,7 @@ public class EnemyAnimationRelay : MonoBehaviour
 
     public void OnAttackEnd()
     {
-        if (_enemyAI != null)
+        if (_enemyAI != null && _enemyAI.gameObject != null)
         {
             _enemyAI.OnAttackEnd();
         }
