@@ -4,8 +4,7 @@ using UnityEngine;
 public class RadioZoneTrigger : MonoBehaviour
 {
     [SerializeField] private RadioSystem.RadioStation[] zoneStations;
-
-    [Header("Efecto de Interferencia / Geiger")]
+    
     [SerializeField] private AudioSource staticAudioSource;
     [SerializeField] private float maxVolume = 0.8f;
     [SerializeField] private float minPitch = 0.8f;
@@ -38,6 +37,11 @@ public class RadioZoneTrigger : MonoBehaviour
                 _currentRadio = radio;
                 radio.SetZoneStations(zoneStations);
                 _playerInZone = true;
+
+                if (radio.HasRadio)
+                {
+                    FindObjectOfType<RadioUI>()?.SetSignalState(true);
+                }
             }
         }
     }
@@ -49,7 +53,8 @@ public class RadioZoneTrigger : MonoBehaviour
         if (_currentRadio.HasRadio)
         {
             float distance = Vector3.Distance(_currentRadio.transform.position, transform.position);
-            float radius = _sphereCollider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z);
+            float maxScale = Mathf.Max(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z);
+            float radius = _sphereCollider.radius * maxScale;
 
             float t = Mathf.Clamp01(distance / radius);
             float proximityFactor = 1f - t;
@@ -72,6 +77,8 @@ public class RadioZoneTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            FindObjectOfType<RadioUI>()?.SetSignalState(false);
+
             RadioSystem radio = other.GetComponent<RadioSystem>();
             if (radio != null)
             {

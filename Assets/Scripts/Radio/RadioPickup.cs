@@ -26,6 +26,13 @@ public class RadioPickup : MonoBehaviour
         if (radio != null)
         {
             radio.EquipRadio();
+
+            RadioUI radioUI = FindObjectOfType<RadioUI>();
+            if (radioUI != null)
+            {
+                radioUI.UnlockRadioHUD(true);
+            }
+
             InteractionUI.Instance?.HidePrompt(); 
             gameObject.SetActive(false);
         }
